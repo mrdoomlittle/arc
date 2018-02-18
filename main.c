@@ -1,5 +1,7 @@
 # include "arc.h"
 # include <malloc.h>
+# include "lat/lat.h"
+struct lat la;
 void tree(arcp __root) {
 	recordp *p = __root->reg;
 	recordp *end = p+0xff;
@@ -23,6 +25,7 @@ void tree(arcp __root) {
 
 # include <string.h>
 int main() {
+	lat_prepare(&la);
 	struct arc root;
 	arc_prepare(&root);
 
@@ -56,4 +59,6 @@ int main() {
 	delarc(a0);
 
 	arc_free(&root);
+	printf("latu: %u-bytes\n", mem_usage());
+	lat_free(&la);
 }

@@ -1,4 +1,5 @@
 sh clean.sh
 gcc -c arc.c
 gcc -c hash.c
-gcc main.c arc.o hash.o
+gcc -c lat/lat.c
+gcc main.c arc.o lat.o hash.o
