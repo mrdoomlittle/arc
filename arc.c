@@ -27,6 +27,14 @@ void readrec(recordp __rec, void *__buf, mdl_uint_t __off, mdl_uint_t __n) {
 	memcpy(__buf, (mdl_u8_t*)__rec->p+__off, __n);
 }
 
+void *rec_alloc(mdl_uint_t __n) {
+	return malloc(__n);
+}
+
+void rec_free(void *__p) {
+	free(__p);
+}
+
 recordp creatrec(arcp __arc, mdl_u64_t __no, void *__p, mdl_u8_t __sort) {
 	recordp *p = __arc->reg+(__no&0xff);
 
@@ -42,10 +50,6 @@ recordp creatrec(arcp __arc, mdl_u64_t __no, void *__p, mdl_u8_t __sort) {
 	return rec;
 }
 
-void freerec(recordp __rec) {
-	free(__rec->p);
-}
-
 void delrec(arcp __arc, recordp __rec) {
 	recordp *p = __arc->reg+(__rec->no&0xff);
 	if (*p == __rec)
@@ -57,7 +61,7 @@ void delrec(arcp __arc, recordp __rec) {
 }
 
 arcp creatarc(arcp __arc, mdl_u64_t __no) {
-	recordp rec = creatrec(__arc, __no, malloc(sizeof(struct arc)), _rec_arc);
+	recordp rec = creatrec(__arc, __no, rec_alloc(sizeof(struct arc)), _rec_arc);
 	arcp arc = (arcp)rec->p;
 	arc_prepare(arc);
 	arc->bk = __arc;
@@ -67,7 +71,8 @@ arcp creatarc(arcp __arc, mdl_u64_t __no) {
 
 void delarc(arcp __arc) {
 	arc_free(__arc);
-	freerec(__arc->p);
+	if (__arc->p != NULL)
+		rec_free(__arc->p->p);
 	delrec(__arc->bk, __arc->p);
 }
 

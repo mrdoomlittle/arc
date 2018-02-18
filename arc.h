@@ -25,7 +25,9 @@ void delarc(arcp);
 
 recordp creatrec(arcp, mdl_u64_t, void*, mdl_u8_t);
 void delrec(arcp, recordp);
-void freerec(recordp);
+
+void *rec_alloc(mdl_uint_t);
+void rec_free(void*);
 
 void arc_free(arcp);
 void writerec(recordp, void*, mdl_uint_t, mdl_uint_t);
