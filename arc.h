@@ -32,4 +32,7 @@ void rec_free(void*);
 void arc_free(arcp);
 void writerec(recordp, void*, mdl_uint_t, mdl_uint_t);
 void readrec(recordp, void*, mdl_uint_t, mdl_uint_t);
+
+mdl_u64_t hash_put(char const*, mdl_u64_t);
+mdl_u64_t hash_get(char const*);
 # endif /*__arc__h*/

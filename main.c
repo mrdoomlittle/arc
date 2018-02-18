@@ -21,6 +21,7 @@ void tree(arcp __root) {
 	}
 }
 
+# include <string.h>
 int main() {
 	struct arc root;
 	arc_prepare(&root);
@@ -32,17 +33,22 @@ int main() {
 	arcp a4 = creatarc(a3, 0);
 
 
-	mdl_u8_t i = 0;
-	while(i != 24) {
-		creatrec(a4, i++, NULL, _rec_raw);
-	}
+	recordp r0 = creatrec(a4, hash_put("doc", 0), rec_alloc(20), _rec_raw); 
+	recordp r1 = creatrec(a4, hash_put("src", 1), rec_alloc(20), _rec_raw);
+
+	char buf[20];
+	strcpy(buf, "21299");
+	writerec(r0, buf, 0, 20);
 
 	tree(&root);
 
-	i = 0;
-	while(i != 24) {
-		delrec(a4, arc_lookup(a4, i++));
-	}
+	bzero(buf, 20);
+	readrec(r0, buf, 0, 20);
+	printf("%s\n", buf);
+
+	delrec(a4, arc_lookup(a4, hash_get("doc")));
+	delrec(a4, arc_lookup(a4, hash_get("src")));
+
 	delarc(a4);
 	delarc(a3);
 	delarc(a2);

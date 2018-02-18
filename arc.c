@@ -58,6 +58,8 @@ void delrec(arcp __arc, recordp __rec) {
 		__rec->bk->fd = __rec->fd;
 		__rec->fd->bk = __rec->bk;
 	}
+	if (__rec->p != NULL)
+		rec_free(__rec->p);
 }
 
 arcp creatarc(arcp __arc, mdl_u64_t __no) {
@@ -71,8 +73,6 @@ arcp creatarc(arcp __arc, mdl_u64_t __no) {
 
 void delarc(arcp __arc) {
 	arc_free(__arc);
-	if (__arc->p != NULL)
-		rec_free(__arc->p->p);
 	delrec(__arc->bk, __arc->p);
 }
 
